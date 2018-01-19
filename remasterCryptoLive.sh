@@ -207,4 +207,5 @@ sudo rm -rf ./edit
 rm ~/offlineWalletInstall.sh
 rm ~/my_isohdpfx.bin
 
+#to prevent redownloading every time during testing
 #rm ~/ubuntu-16.04.3-desktop-amd64.iso
