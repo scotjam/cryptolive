@@ -34,13 +34,21 @@ sudo unsquashfs /media/ubuntu-iso/casper/filesystem.squashfs
 #rename the uncompressed copy to indicate it's being edited
 sudo mv squashfs-root edit
 
-#copy main installation script into our expanded squashfs filesystem for chroot
-wget https://pastebin.com/raw/hBqu4dc8
-#fix dos endline characters (could equally have used dos2unix) to get rid of bash: $'\r': command not found
-sed -i 's/\r$//' ./hBqu4dc8
-mv ./hBqu4dc8 ./offlineWalletInstall.sh
-#make it executable
-chmod a+x ./offlineWalletInstall.sh
+
+#if this file is being run from a clone of https://github.com/scotjam/cryptolive 
+# (which it definitely should be) then the next piece is unnecessary as
+# the main install script file will already exist
+if [[ ! -e ./offlineWalletInstall.sh ]]; then
+	#copy main installation script into our expanded squashfs filesystem for chroot
+	wget https://pastebin.com/raw/hBqu4dc8
+	#fix dos endline characters (could equally have used dos2unix) to get 
+	# rid of bash: $'\r': command not found
+	sed -i 's/\r$//' ./hBqu4dc8
+	mv ./hBqu4dc8 ./offlineWalletInstall.sh
+	#make it executable
+	chmod a+x ./offlineWalletInstall.sh	
+fi
+
 
 #copy it into the edited filesystem
 sudo cp offlineWalletInstall.sh edit/tmp/
