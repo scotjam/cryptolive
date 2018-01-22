@@ -12,7 +12,6 @@ CRYPTO_USER="cryptolive"
 #prevent python3 from creating .pyc python bytecode cache files
 PYTHONDONTWRITEBYTECODE="TRUE" #any value will do
 
-cd ~
 
 if [[ ! -e ./ubuntu-16.04.3-desktop-amd64.iso ]]; then
 	wget http://releases.ubuntu.com/16.04/ubuntu-16.04.3-desktop-amd64.iso
@@ -24,7 +23,7 @@ sudo mkdir /media/ubuntu-iso
 
 #mount our ubuntu ISO so that we can start copying files from it to 
 # a local directory for editing
-sudo mount -o loop ~/ubuntu-16.04.3-desktop-amd64.iso /media/ubuntu-iso
+sudo mount -o loop ./ubuntu-16.04.3-desktop-amd64.iso /media/ubuntu-iso
 
 #sudo cp -rT /media/ubuntu-iso $WORK_DIR
 #copy all files from the ISO to our working directory 
@@ -302,12 +301,12 @@ sudo rm md5sum.txt
 find -type f -print0 | sudo xargs -0 md5sum | grep -v isolinux/boot.cat | sudo tee md5sum.txt
 
 sudo apt-get install -y xorriso
-dd if=~/ubuntu-16.04.3-desktop-amd64.iso bs=512 count=1 of=~/my_isohdpfx.bin
+dd if=./ubuntu-16.04.3-desktop-amd64.iso bs=512 count=1 of=./my_isohdpfx.bin
 cd $WORK_DIR
 
 #create image
 xorriso -as mkisofs \
-  -isohybrid-mbr ~/my_isohdpfx.bin \
+  -isohybrid-mbr ./my_isohdpfx.bin \
   -c isolinux/boot.cat \
   -b isolinux/isolinux.bin \
   -no-emul-boot \
@@ -317,12 +316,11 @@ xorriso -as mkisofs \
   -e boot/grub/efi.img \
   -no-emul-boot \
   -isohybrid-gpt-basdat \
-  -o ~/cryptoLive-0.1.0.iso \
+  -o ./cryptoLive-0.1.3.iso \
   $WORK_DIR
 
-sha256sum ~/cryptoLive-0.1.0.iso > ~/cryptoLive-0.1.0.iso.sha256
+sha256sum ./cryptoLive-0.1.3.iso > ./cryptoLive-0.1.3.iso.sha256
 
-cd ~
 #clean up iso mounting
 #sudo umount $WORK_DIR
 sudo umount /media/ubuntu-iso
@@ -330,8 +328,8 @@ sudo rm -rf $WORK_DIR
 sudo rm -rf /media/ubuntu-iso
 
 sudo rm -rf ./edit
-rm ~/offlineWalletInstall.sh
-rm ~/my_isohdpfx.bin
+rm ./offlineWalletInstall.sh
+rm ./my_isohdpfx.bin
 
 #to prevent redownloading every time during testing
-#rm ~/ubuntu-16.04.3-desktop-amd64.iso
+#rm ./ubuntu-16.04.3-desktop-amd64.iso
