@@ -4,6 +4,7 @@
 sudo apt-get install -y squashfs-tools genisoimage
 
 #directory into which we will put the livecd contents
+START_DIR=`pwd`
 WORK_DIR="/media/temp-iso"
 
 #username of the user we're adding to the livecd
@@ -176,8 +177,9 @@ sudo rm -rf edit/usr/sbin/zcashmini/.git
 sudo rm -rf edit/run/log/journal/*
 sudo rm -rf edit/run/reboot-required.pkgs
 sudo rm -rf edit/run/sudo/ts/user
+sudo rm -rf edit/.cache/
 
-find edit/ -name '*.pyc' -delete
+sudo find edit/ -name '*.pyc' -delete
 
 
 : <<'COMMENT_OUT'
@@ -301,12 +303,12 @@ sudo rm md5sum.txt
 find -type f -print0 | sudo xargs -0 md5sum | grep -v isolinux/boot.cat | sudo tee md5sum.txt
 
 sudo apt-get install -y xorriso
-dd if=./ubuntu-16.04.3-desktop-amd64.iso bs=512 count=1 of=./my_isohdpfx.bin
+dd if=$START_DIR/ubuntu-16.04.3-desktop-amd64.iso bs=512 count=1 of=$START_DIR/my_isohdpfx.bin
 cd $WORK_DIR
 
 #create image
 xorriso -as mkisofs \
-  -isohybrid-mbr ./my_isohdpfx.bin \
+  -isohybrid-mbr $START_DIR/my_isohdpfx.bin \
   -c isolinux/boot.cat \
   -b isolinux/isolinux.bin \
   -no-emul-boot \
@@ -316,10 +318,10 @@ xorriso -as mkisofs \
   -e boot/grub/efi.img \
   -no-emul-boot \
   -isohybrid-gpt-basdat \
-  -o ./cryptoLive-0.1.3.iso \
+  -o $START_DIR/cryptoLive-0.1.2.iso \
   $WORK_DIR
 
-sha256sum ./cryptoLive-0.1.3.iso > ./cryptoLive-0.1.3.iso.sha256
+sha256sum $START_DIR/cryptoLive-0.1.2.iso > $START_DIR/cryptoLive-0.1.2.iso.sha256
 
 #clean up iso mounting
 #sudo umount $WORK_DIR
@@ -327,9 +329,9 @@ sudo umount /media/ubuntu-iso
 sudo rm -rf $WORK_DIR
 sudo rm -rf /media/ubuntu-iso
 
-sudo rm -rf ./edit
-rm ./offlineWalletInstall.sh
-rm ./my_isohdpfx.bin
+sudo rm -rf $START_DIR/edit
+#rm ./offlineWalletInstall.sh
+rm $START_DIR/my_isohdpfx.bin
 
 #to prevent redownloading every time during testing
 #rm ./ubuntu-16.04.3-desktop-amd64.iso
