@@ -9,6 +9,9 @@ WORK_DIR="/media/temp-iso"
 #username of the user we're adding to the livecd
 CRYPTO_USER="cryptolive"
 
+#prevent python3 from creating .pyc python bytecode cache files
+PYTHONDONTWRITEBYTECODE="TRUE" #any value will do
+
 cd ~
 
 if [[ ! -e ./ubuntu-16.04.3-desktop-amd64.iso ]]; then
@@ -40,11 +43,10 @@ sudo mv squashfs-root edit
 # the main install script file will already exist
 if [[ ! -e ./offlineWalletInstall.sh ]]; then
 	#copy main installation script into our expanded squashfs filesystem for chroot
-	wget https://pastebin.com/raw/hBqu4dc8
+	wget https://github.com/scotjam/cryptolive/raw/master/offlineWalletInstall.sh
 	#fix dos endline characters (could equally have used dos2unix) to get 
 	# rid of bash: $'\r': command not found
-	sed -i 's/\r$//' ./hBqu4dc8
-	mv ./hBqu4dc8 ./offlineWalletInstall.sh
+	sed -i 's/\r$//' ./offlineWalletInstall.sh
 	#make it executable
 	chmod a+x ./offlineWalletInstall.sh	
 fi
@@ -158,6 +160,122 @@ exit
 #################################################
 EOF
 
+#clear log files, cache files, time stamps and anything else we can think of that is likely
+# to make the filesystem change over time even if we have done nothing different from our side
+sudo rm -rf edit/tmp
+sudo rm -rf edit/var/log/*.log
+sudo rm -rf edit/var/log/apt/*.log
+sudo rm -rf edit/var/lib/apt/lists/*
+sudo rm -rf edit/var/cache/*
+sudo rm -rf edit/var/lib/doc-base/info/files*
+sudo rm -rf edit/root/.wget-hsts
+sudo rm -rf edit/root/.npm/registry.npmjs.org/source-map/.cache.json
+sudo rm -rf edit/root/.npm/registry.npmjs.org/hawk/.cache.json
+sudo rm -rf edit/root/.cache/*
+sudo rm -rf edit/root/.mozilla/firefox/Crash Reports/*
+sudo rm -rf edit/usr/sbin/zcashmini/.git
+sudo rm -rf edit/run/log/journal/*
+sudo rm -rf edit/run/reboot-required.pkgs
+sudo rm -rf edit/run/sudo/ts/user
+
+find edit/ -name '*.pyc' -delete
+
+
+: <<'COMMENT_OUT'
+./var/lib/app-info/icons/ubuntu-xenial-security-main/64x64/eog_eog.png
+./usr/local/lib/python3.5/dist-packages/qrcode/image/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/ecdsa-0.13.dist-info/RECORD
+./usr/local/lib/python3.5/dist-packages/Electron_Cash-3.1.2.dist-info/RECORD
+./usr/local/lib/python3.5/dist-packages/PyQt5-5.9.2.dist-info/RECORD
+./usr/local/lib/python3.5/dist-packages/electrum_ltc/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_plugins/keepkey/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_plugins/email_requests/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_plugins/virtualkeyboard/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_plugins/greenaddress_instant/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_plugins/ledger/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_plugins/trustedcoin/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_plugins/audio_modem/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_plugins/digitalbitbox/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_plugins/labels/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_plugins/hw_wallet/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_plugins/trezor/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_plugins/cosigner_pool/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_plugins/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/ecdsa/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/dns/rdtypes/ANY/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/dns/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/dns/rdtypes/IN/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/dns/rdtypes/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/jsonrpclib/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/pyaes/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/protobuf-3.5.1.dist-info/RECORD
+./usr/local/lib/python3.5/dist-packages/pyaes-1.6.1.dist-info/RECORD
+./usr/local/lib/python3.5/dist-packages/Electrum_LTC-3.0.5.1.dist-info/RECORD
+./usr/local/lib/python3.5/dist-packages/dnspython-1.15.0.dist-info/RECORD
+./usr/local/lib/python3.5/dist-packages/google/protobuf/internal/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/google/protobuf/internal/import_test_package/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/google/protobuf/compiler/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/google/protobuf/pyext/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/google/protobuf/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/PyQt5/uic/widget-plugins/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/PyQt5/uic/port_v3/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/PyQt5/uic/Compiler/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/PyQt5/uic/Loader/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/PyQt5/uic/__pycache__/* 
+./usr/local/lib/python3.5/dist-packages/electrum_gui/qt/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_gui/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/Electrum-3.0.5.dist-info/RECORD
+./usr/local/lib/python3.5/dist-packages/Electrum-3.0.5.dist-info/RECORD
+./usr/local/lib/python3.5/dist-packages/electrum/__pycache__/*
+
+
+./usr/local/lib/python3.5/dist-packages/electrum_ltc_gui/qt/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_ltc_gui/__pycache__/*
+
+./usr/local/lib/python3.5/dist-packages/electrum_ltc_plugins/keepkey/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_ltc_plugins/email_requests/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_ltc_plugins/virtualkeyboard/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_ltc_plugins/greenaddress_instant/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_ltc_plugins/ledger/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_ltc_plugins/trustedcoin/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_ltc_plugins/audio_modem/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_ltc_plugins/digitalbitbox/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_ltc_plugins/labels/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_ltc_plugins/hw_wallet/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_ltc_plugins/trezor/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_ltc_plugins/cosigner_pool/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electrum_ltc_plugins/__pycache__/*
+
+
+./usr/local/lib/python3.5/dist-packages/electroncash_gui/qt/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electroncash_gui/__pycache__/*
+
+./usr/local/lib/python3.5/dist-packages/electroncash_plugins/keepkey/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electroncash_plugins/email_requests/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electroncash_plugins/virtualkeyboard/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electroncash_plugins/greenaddress_instant/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electroncash_plugins/ledger/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electroncash_plugins/trustedcoin/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electroncash_plugins/audio_modem/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electroncash_plugins/digitalbitbox/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electroncash_plugins/labels/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electroncash_plugins/hw_wallet/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electroncash_plugins/trezor/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electroncash_plugins/cosigner_pool/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electroncash_plugins/__pycache__/*
+./usr/local/lib/python3.5/dist-packages/electroncash/__pycache__/*
+
+./usr/local/lib/python3.5/dist-packages/__pycache__/*
+./usr/local/lib/python2.7/dist-packages/x11_hash-1.4.dist-info/RECORD
+./usr/local/lib/python2.7/dist-packages/qrcode/*
+./usr/lib/python3.5/idlelib/__pycache__/*
+./usr/lib/python3.5/__pycache__/*
+
+./usr/local/lib/python3.5/dist-packages/scrypt-0.8.0.dist-info/RECORD
+./usr/local/lib/python3.5/dist-packages/jsonrpclib_pelix-0.3.1.dist-info/RECORD
+
+./usr/local/lib/python3.5/dist-packages/_scrypt.cpython-35m-x86_64-linux-gnu.so
+COMMENT_OUT
 
 #make old manifest file writable
 sudo chmod +w $WORK_DIR/casper/filesystem.manifest

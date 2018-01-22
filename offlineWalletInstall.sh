@@ -29,7 +29,8 @@ cd $WORK_DIR
 mkdir $WORK_DIR/cryptoLiveExtras
 
 #BTC Bitcoin (electrum). To run: electrum
-sudo -S apt-get install -y python3-setuptools python3-pyqt5 python3-pip
+sudo -S apt-get install -y python3-setuptools python3-pyqt5 python3-pip libzbar-dev
+sudo -S pip install zbar
 sudo -S pip3 install https://download.electrum.org/3.0.5/Electrum-3.0.5.tar.gz
 
 #LTC Litecoin (electrum-ltc). To run: electrum-ltc
