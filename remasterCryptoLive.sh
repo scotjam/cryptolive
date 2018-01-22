@@ -162,7 +162,7 @@ EOF
 
 #clear log files, cache files, time stamps and anything else we can think of that is likely
 # to make the filesystem change over time even if we have done nothing different from our side
-sudo rm -rf edit/tmp
+
 sudo rm -rf edit/var/log/*.log
 sudo rm -rf edit/var/log/apt/*.log
 sudo rm -rf edit/var/lib/apt/lists/*
@@ -282,7 +282,7 @@ COMMENT_OUT
 sudo chmod +w $WORK_DIR/casper/filesystem.manifest
 
 #overwrite it with updated manifest
-sudo mv -f edit/tmp/filesystem.manifest $WORK_DIR/casper/filesystem.manifest
+sudo mv -f $START_DIR/edit/tmp/filesystem.manifest $WORK_DIR/casper/filesystem.manifest
 sudo cp $WORK_DIR/casper/filesystem.manifest $WORK_DIR/casper/filesystem.manifest-desktop
 sudo sed -i '/ubiquity/d' $WORK_DIR/casper/filesystem.manifest-desktop
 sudo sed -i '/casper/d' $WORK_DIR/casper/filesystem.manifest-desktop
@@ -330,7 +330,7 @@ sudo rm -rf $WORK_DIR
 sudo rm -rf /media/ubuntu-iso
 
 sudo rm -rf $START_DIR/edit
-#rm ./offlineWalletInstall.sh
+#rm ./offlineWalletInstall.sh 
 rm $START_DIR/my_isohdpfx.bin
 
 #to prevent redownloading every time during testing
