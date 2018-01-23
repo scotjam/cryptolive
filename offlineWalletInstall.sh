@@ -29,7 +29,7 @@ cd $WORK_DIR
 mkdir $WORK_DIR/cryptoLiveExtras
 
 #BTC Bitcoin (electrum). To run: electrum
-sudo -S apt-get install -y python3-setuptools python3-pyqt5 pyqt5-dev-tools python3-pip python-pip libzbar-dev
+sudo -S apt-get install -y python3-setuptools python3-pyqt5 pyqt5-dev-tools python3-pip python-pip libzbar-dev git
 sudo -S pip install zbar
 sudo -S pip3 install https://github.com/spesmilo/electrum/archive/3.0.5.zip
 sudo -S git clone -b "3.0.5" https://github.com/spesmilo/electrum
@@ -366,7 +366,7 @@ sudo desktop-file-install /usr/local/lib/python3.5/dist-packages/usr/share/appli
 sudo desktop-file-install /usr/local/lib/python2.7/dist-packages/usr/share/applications/electrum-dash.desktop 
 sudo desktop-file-install /usr/local/lib/python2.7/dist-packages/usr/share/applications/electrum-dash.desktop 
 
-#if we're installing from root account, we need to add permissions for user accounts to run the shortcuts
+#add permissions for user accounts to run the shortcuts
 sudo chmod a+x /usr/share/applications/electrum.desktop
 sudo chmod a+x /usr/share/applications/electrum-ltc.desktop
 sudo chmod a+x /usr/share/applications/electron-cash.desktop

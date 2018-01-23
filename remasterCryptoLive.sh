@@ -155,7 +155,9 @@ umount /sys
 umount /dev/pts
 
 #generate updated manifest
+echo "before new manifest"
 dpkg-query -W --showformat='${Package} ${Version}\n' > /tmp/filesystem.manifest
+echo "after new manifest"
 exit
 #################################################
 EOF
@@ -289,7 +291,7 @@ sudo sed -i '/casper/d' $WORK_DIR/casper/filesystem.manifest-desktop
 
 #compress filesystem
 #sudo rm $WORK_DIR/casper/filesystem.squashfs we didn't copy it (rsync exclude) so we don't need to delete it
-sudo mksquashfs edit $WORK_DIR/casper/filesystem.squashfs
+mksquashfs edit $WORK_DIR/casper/filesystem.squashfs
  
 #update filesystem size (needed by installer)
 sudo bash -c "printf $(sudo du -sx --block-size=1 edit | cut -f1) > $WORK_DIR/casper/filesystem.size"
@@ -318,10 +320,10 @@ xorriso -as mkisofs \
   -e boot/grub/efi.img \
   -no-emul-boot \
   -isohybrid-gpt-basdat \
-  -o $START_DIR/cryptoLive-0.1.1.iso \
+  -o $START_DIR/cryptoLive-0.1.2.iso \
   $WORK_DIR
 
-sha256sum $START_DIR/cryptoLive-0.1.1.iso > $START_DIR/cryptoLive-0.1.1.iso.sha256
+sha256sum $START_DIR/cryptoLive-0.1.2.iso > $START_DIR/cryptoLive-0.1.2.iso.sha256
 
 #clean up iso mounting
 #sudo umount $WORK_DIR
