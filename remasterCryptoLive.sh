@@ -318,10 +318,10 @@ xorriso -as mkisofs \
   -e boot/grub/efi.img \
   -no-emul-boot \
   -isohybrid-gpt-basdat \
-  -o $START_DIR/cryptoLive-0.1.2.iso \
+  -o $START_DIR/cryptoLive-0.1.1.iso \
   $WORK_DIR
 
-sha256sum $START_DIR/cryptoLive-0.1.2.iso > $START_DIR/cryptoLive-0.1.2.iso.sha256
+sha256sum $START_DIR/cryptoLive-0.1.1.iso > $START_DIR/cryptoLive-0.1.1.iso.sha256
 
 #clean up iso mounting
 #sudo umount $WORK_DIR
