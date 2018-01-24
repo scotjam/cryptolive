@@ -165,23 +165,23 @@ EOF
 #clear log files, cache files, time stamps and anything else we can think of that is likely
 # to make the filesystem change over time even if we have done nothing different from our side
 
-sudo rm -rf edit/var/log/*.log
-sudo rm -rf edit/var/log/apt/*.log
-sudo rm -rf edit/var/lib/apt/lists/*
-sudo rm -rf edit/var/cache/*
-sudo rm -rf edit/var/lib/doc-base/info/files*
-sudo rm -rf edit/root/.wget-hsts
-sudo rm -rf edit/root/.npm/registry.npmjs.org/source-map/.cache.json
-sudo rm -rf edit/root/.npm/registry.npmjs.org/hawk/.cache.json
-sudo rm -rf edit/root/.cache/*
-sudo rm -rf edit/root/.mozilla/firefox/Crash Reports/*
-sudo rm -rf edit/usr/sbin/zcashmini/.git
-sudo rm -rf edit/run/log/journal/*
-sudo rm -rf edit/run/reboot-required.pkgs
-sudo rm -rf edit/run/sudo/ts/user
-sudo rm -rf edit/.cache/
+#sudo rm -rf edit/var/log/*.log
+#sudo rm -rf edit/var/log/apt/*.log
+#sudo rm -rf edit/var/lib/apt/lists/*
+#sudo rm -rf edit/var/cache/*
+#sudo rm -rf edit/var/lib/doc-base/info/files*
+#sudo rm -rf edit/root/.wget-hsts
+#sudo rm -rf edit/root/.npm/registry.npmjs.org/source-map/.cache.json
+#sudo rm -rf edit/root/.npm/registry.npmjs.org/hawk/.cache.json
+#sudo rm -rf edit/root/.cache/*
+#sudo rm -rf edit/root/.mozilla/firefox/Crash Reports/*
+#sudo rm -rf edit/usr/sbin/zcashmini/.git
+#sudo rm -rf edit/run/log/journal/*
+#sudo rm -rf edit/run/reboot-required.pkgs
+#sudo rm -rf edit/run/sudo/ts/user
+#sudo rm -rf edit/.cache/
 
-sudo find edit/ -name '*.pyc' -delete
+#sudo find edit/ -name '*.pyc' -delete
 
 
 : <<'COMMENT_OUT'
@@ -291,7 +291,7 @@ sudo sed -i '/casper/d' $WORK_DIR/casper/filesystem.manifest-desktop
 
 #compress filesystem
 #sudo rm $WORK_DIR/casper/filesystem.squashfs we didn't copy it (rsync exclude) so we don't need to delete it
-mksquashfs edit $WORK_DIR/casper/filesystem.squashfs
+sudo mksquashfs edit $WORK_DIR/casper/filesystem.squashfs
  
 #update filesystem size (needed by installer)
 sudo bash -c "printf $(sudo du -sx --block-size=1 edit | cut -f1) > $WORK_DIR/casper/filesystem.size"
@@ -320,10 +320,10 @@ xorriso -as mkisofs \
   -e boot/grub/efi.img \
   -no-emul-boot \
   -isohybrid-gpt-basdat \
-  -o $START_DIR/cryptoLive-0.1.2.iso \
+  -o $START_DIR/cryptoLive-0.1.3.iso \
   $WORK_DIR
 
-sha256sum $START_DIR/cryptoLive-0.1.2.iso > $START_DIR/cryptoLive-0.1.2.iso.sha256
+sha256sum $START_DIR/cryptoLive-0.1.3.iso > $START_DIR/cryptoLive-0.1.3.iso.sha256
 
 #clean up iso mounting
 #sudo umount $WORK_DIR

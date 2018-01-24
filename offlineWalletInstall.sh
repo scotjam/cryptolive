@@ -122,6 +122,31 @@ sudo -S apt-get -y install nodejs
 #npm install javascript-qrcode
 mv ./javascript-qrcode-master $WORK_DIR/cryptoLiveExtras/javascript-qrcode-master
 
+#printer driver source - add your own here - 
+#wget http://download.brother.com/welcome/dlf100421/hl1110cupswrapper-3.0.1-1.i386.deb
+#sudo ln -s /etc/init.d/cups /etc/init.d/lpd
+#sudo mkdir /var/spool/lpd
+#iff apparmor-utils are installed
+#sudo aa-complain cupsd
+
+#sudo mkdir /usr/share/cups/model
+#sudo dpkg -i --force-all hl1110cupswrapper-3.0.1-1.i386.deb
+
+#sudo apt-get install lib32stdc++6-4.7-dev 
+#sudo dpkg -i --force-all hl1110cupswrapper-3.0.1-1.i386.deb
+#sudo dpkg -i --force-all hl1110lpr-3.0.1-1.i386.deb
+#lsusb # Bus <BUSID> Device <DEVID>: ID <PRINTERID>:<VENDOR> Hewlett-Packard DeskJet D1360
+# chmod 0666 /dev/bus/usb/<BUSID>/<DEVID>
+#sudo chmod 666 /dev/bus/usb/xxx/xxx
+#sudo echo "SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"<VENDOR>\", ATTRS{idProduct}==\"<PRINTERID>\", GROUP=\"lp\", MODE:=\"666\"" >> /etc/udev/rules.d/10-local.rules
+
+#optional - install drivers for HL1110 printer
+wget https://pastebin.com/raw/aqJDr46n
+sed -i 's/\r$//' ./aqJDr46n
+mv ./aqJDr46n ./linux-brprinter-installer-2.2.0-1
+chmod a+x linux-brprinter-installer-2.2.0-1
+sudo ./linux-brprinter-installer-2.2.0-1 HL-1110
+
 #XMR Monero (Monero GUI). To run: monero-gui-launch
 mkdir $WORK_DIR/monero-offline-sign
 cd $WORK_DIR/monero-offline-sign
@@ -320,26 +345,26 @@ sudo -S rm -f $WORK_DIR/ripple-wallet-linux64-1.4.1.zip
 sudo -S rm -f $WORK_DIR/StellarDesktopLinux64-v3.3.zip
 sudo -S rm -rf $WORK_DIR/zcash-mini
 
-sudo -S add-apt-repository -y ppa:nemh/systemback
-sudo -S apt-get update
+#sudo -S add-apt-repository -y ppa:nemh/systemback
+#sudo -S apt-get update
 
-echo "Systemback can be used to set up a livecd - click Live System create and follow the instructions. Save the image somewhere with at least 3GB free space"
-echo "Make sure to check the box to include user data files"
-echo "Once complete, you can also choose convert to ISO"
-echo "To copy to USB, launch systemback, insert an empty USB drive with at least 4GB capacity and click the refresh button"
-sudo -S apt-get install -y casper cifs-utils dmsetup grub-common grub-efi-amd64-bin grub-pc grub-pc-bin grub2-common isolinux keyutils libsystemback localechooser-data lupin-casper python-crypto python-ldb python-samba python-tdb samba-common samba-common-bin syslinux-utils systemback-cli systemback-efiboot-amd64 systemback-locales systemback-scheduler user-setup casper cifs-utils dmsetup grub-efi-amd64-bin isolinux keyutils libsystemback localechooser-data lupin-casper python-crypto python-ldb python-samba python-tdb samba-common samba-common-bin syslinux-utils systemback systemback-cli systemback-efiboot-amd64 systemback-locales systemback-scheduler user-setup
+#echo "Systemback can be used to set up a livecd - click Live System create and follow the instructions. Save the image somewhere with at least 3GB free space"
+#echo "Make sure to check the box to include user data files"
+#echo "Once complete, you can also choose convert to ISO"
+#echo "To copy to USB, launch systemback, insert an empty USB drive with at least 4GB capacity and click the refresh button"
+#sudo -S apt-get install -y casper cifs-utils dmsetup grub-common grub-efi-amd64-bin grub-pc grub-pc-bin grub2-common isolinux keyutils libsystemback localechooser-data lupin-casper python-crypto python-ldb python-samba python-tdb samba-common samba-common-bin syslinux-utils systemback-cli systemback-efiboot-amd64 systemback-locales systemback-scheduler user-setup casper cifs-utils dmsetup grub-efi-amd64-bin isolinux keyutils libsystemback localechooser-data lupin-casper python-crypto python-ldb python-samba python-tdb samba-common samba-common-bin syslinux-utils systemback systemback-cli systemback-efiboot-amd64 systemback-locales systemback-scheduler user-setup
 
-sudo -S apt-get install -y systemback
+#sudo -S apt-get install -y systemback
 
-sudo -S apt-get install -y gksu
+#sudo -S apt-get install -y gksu
 
 #gksu systemback
 #commenting out as we're now editing an existing ISO here rather than making a new one from an installed system
 #sudo -S mv /home/systemback_live_*.iso $WORK_DIR/cryptoLive-0.1.iso
 
-sudo -S add-apt-repository -y ppa:mkusb/ppa
-sudo -S apt-get update
-sudo -S apt-get install -y mkusb mkusb-nox usb-pack-efi
+#sudo -S add-apt-repository -y ppa:mkusb/ppa
+#sudo -S apt-get update
+#sudo -S apt-get install -y mkusb mkusb-nox usb-pack-efi
 
 #commenting out as we're not making a USB just yet, and it won't work anyway without tty / gtk?
 #sudo -S mkusb-nox $WORK_DIR/cryptoLive-0.1.iso
