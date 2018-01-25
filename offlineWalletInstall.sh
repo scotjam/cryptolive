@@ -145,6 +145,7 @@ wget https://pastebin.com/raw/aqJDr46n
 sed -i 's/\r$//' ./aqJDr46n
 mv ./aqJDr46n ./linux-brprinter-installer-2.2.0-1
 chmod a+x linux-brprinter-installer-2.2.0-1
+echo "unresolved error at end of installation - ls: cannot access \'/etc/udev/rules.d/*.rules\': No such file or directory"
 sudo ./linux-brprinter-installer-2.2.0-1 HL-1110
 
 #XMR Monero (Monero GUI). To run: monero-gui-launch
